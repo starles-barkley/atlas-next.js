@@ -1,12 +1,13 @@
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function Page() {
   return (
     <main className="w-screen py-12 md:py-24 lg:py-32 flex flex-col items-center justify-center">
       <div className="container px-4 md:px-6">
-        <a href={"/"}>
+        <Link href={"/"}>
           <ChevronLeftIcon className="h-6 w-6 " />
-        </a>
+        </Link>
         <div className="flex flex-col gap-4 items-center">
           <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-6xl">
             About Us
