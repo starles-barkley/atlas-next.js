@@ -1,7 +1,9 @@
+import { addQuestion } from "@/lib/actions";
+
 export function AskQuestion({ topic }: { topic: string }) {
   return (
-    <form className="relative my-8">
-      <input
+    <form className="relative my-8" action={addQuestion}>
+      <input type="hidden" name="topic_id" defaultValue={topic} className="hidden"
         type="text"
         name="title"
         placeholder="Ask a question"
