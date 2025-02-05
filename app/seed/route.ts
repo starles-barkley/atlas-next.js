@@ -86,7 +86,9 @@ export async function GET() {
     await seedQuestions();
     await client.sql`COMMIT`;
 
-    return Response.json({ message: "Database seeded successfully" });
+    return new Response(JSON.stringify({ message: "Success" }), {
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     await client.sql`ROLLBACK`;
     return Response.json({ error }, { status: 500 });
