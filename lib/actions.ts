@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { insertTopic } from "./data";
 import { redirect } from "next/navigation";
 import { insertQuestion, incrementVotes } from "./data"; 
+import { signOut } from "next-auth/react";
 
 
 export async function addTopic(data: FormData) {
@@ -43,4 +44,9 @@ export async function addVote(data: FormData) {
     console.error("Database Error:", error);
     throw new Error("Failed to add vote.");
   }
+}
+
+
+export async function handleSignOut() {
+  await signOut();
 }
