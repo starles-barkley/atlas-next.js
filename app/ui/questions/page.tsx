@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
 
 // Define TypeScript Interfaces
@@ -30,8 +29,8 @@ const getQuestion = async (id: string): Promise<Question> => {
   };
 };
 
-export default function QuestionPage({ params }: { params: { id: string } }) {
-  const id = params?.id as string;
+export default async function QuestionPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
 
