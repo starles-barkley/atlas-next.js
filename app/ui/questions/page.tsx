@@ -30,7 +30,7 @@ const getQuestion = async (id: string): Promise<Question> => {
   };
 };
 
-export default function QuestionPage() {
+export default function QuestionPage({ params }: { params: { id: string } }) {
   const params = useParams();
   const id = params?.id as string;
   const [question, setQuestion] = useState<Question | null>(null);
