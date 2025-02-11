@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { PageProps } from "next";
 
+// Define TypeScript Interfaces
 interface Answer {
   id: number;
   text: string;
@@ -14,10 +15,6 @@ interface Question {
   id: string;
   text: string;
   answers: Answer[];
-}
-
-interface QuestionPageProps extends PageProps {
-  params: { id: string };
 }
 
 // Fetch question function
@@ -33,16 +30,19 @@ const getQuestion = async (id: string): Promise<Question> => {
   };
 };
 
-export default function QuestionPage({ params }: QuestionPageProps) {
-  const { id } = params;
+export default function QuestionPage() {
+  const params = useParams();
+  const id = params?.id as string;
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getQuestion(id).then((data) => {
-      setQuestion(data);
-      setLoading(false);
-    });
+    if (id) {
+      getQuestion(id).then((data) => {
+        setQuestion(data);
+        setLoading(false);
+      });
+    }
   }, [id]);
 
   if (loading) return <p>Loading...</p>;
