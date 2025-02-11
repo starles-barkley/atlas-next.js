@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { PageProps } from "next";
 
-// Define TypeScript Interfaces
 interface Answer {
   id: number;
   text: string;
@@ -16,7 +16,7 @@ interface Question {
   answers: Answer[];
 }
 
-interface Params {
+interface QuestionPageProps extends PageProps {
   params: { id: string };
 }
 
@@ -33,7 +33,7 @@ const getQuestion = async (id: string): Promise<Question> => {
   };
 };
 
-export default function QuestionPage({ params }: Params) {
+export default function QuestionPage({ params }: QuestionPageProps) {
   const { id } = params;
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
