@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import { db } from "@vercel/postgres";
 import { users, topics, questions } from "../../lib/placeholder-data";
 import { revalidatePath } from "next/cache";
