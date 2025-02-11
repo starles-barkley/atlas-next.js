@@ -77,3 +77,23 @@ export async function incrementVotes(id: string) {
     throw new Error("Failed to increment votes.");
   }
 }
+
+export async function fetchQuestion(id: string) {
+  try {
+    const data = await sql`SELECT * FROM questions WHERE id = ${id}`;
+    return data.rows.length > 0 ? data.rows[0] : null;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch question.");
+  }
+}
+
+export async function fetchAnswers(questionId: string) {
+  try {
+    const data = await sql`SELECT * FROM answers WHERE question_id = ${questionId}`;
+    return data.rows;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to fetch answers.");
+  }
+}
