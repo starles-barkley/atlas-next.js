@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import { db } from "@vercel/postgres";
 import { users, topics, questions } from "../../lib/placeholder-data";
 import { revalidatePath } from "next/cache";
+import { NextResponse } from "next/server";
+
 
 const client = await db.connect();
 
@@ -137,12 +139,13 @@ export async function GET() {
     await seedAnswers();
     await client.sql`COMMIT`;
 
-    revalidatePath("/", "layout");
-
-    return Response.json({ message: "Database seeded successfully" });
+    return NextResponse.json({ message: "Database seeded successfully" });
   } catch (error) {
-    await client.sql`ROLLBACK`;
     console.log(error);
-    return Response.json({ error }, { status: 500 });
+
+    // Ensure error is treated as an Error instance
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
