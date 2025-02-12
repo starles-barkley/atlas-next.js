@@ -97,3 +97,21 @@ export async function fetchAnswers(questionId: string) {
     throw new Error("Failed to fetch answers.");
   }
 }
+
+export async function insertAnswer(questionId: string, text: string) {
+  try {
+    await sql`INSERT INTO answers (text, question_id) VALUES (${text}, ${questionId})`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to add answer.");
+  }
+}
+
+export async function markAnswerAsAccepted(questionId: string, answerId: string) {
+  try {
+    await sql`UPDATE questions SET answer_id = ${answerId} WHERE id = ${questionId}`;
+  } catch (error) {
+    console.error("Database Error:", error);
+    throw new Error("Failed to mark answer as accepted.");
+  }
+}

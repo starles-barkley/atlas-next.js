@@ -1,33 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { addAnswer } from "@/lib/actions";
 
 export function AnswerForm({ questionId }: { questionId: string }) {
-  const [answer, setAnswer] = useState("");
+  const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!answer.trim()) return;
+    if (!text.trim()) return;
 
     setLoading(true);
+    const formData = new FormData();
+    formData.append("questionId", questionId);
+    formData.append("text", text);
 
-    try {
-      const response = await fetch(`/api/answers`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ questionId, text: answer }),
-      });
-
-      if (response.ok) {
-        setAnswer("");
-        window.location.reload(); // Refresh page to show new answer
-      }
-    } catch (error) {
-      console.error("Failed to submit answer:", error);
-    } finally {
-      setLoading(false);
-    }
+    await addAnswer(formData);
+    setText("");
+    setLoading(false);
   };
 
   return (
@@ -35,8 +26,8 @@ export function AnswerForm({ questionId }: { questionId: string }) {
       <textarea
         className="w-full border rounded p-2"
         placeholder="Write your answer..."
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
         disabled={loading}
       />
       <button

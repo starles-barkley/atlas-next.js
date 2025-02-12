@@ -1,28 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { markAsAccepted } from "@/lib/actions";
 
-export function AnswerItem({ answer, accepted }: { answer: any, accepted?: boolean }) {
+export function AnswerItem({ answer, accepted }: { answer: any; accepted?: boolean }) {
   const [loading, setLoading] = useState(false);
 
-  const markAsAccepted = async () => {
+  const markAsCorrect = async () => {
     if (accepted || loading) return;
 
     setLoading(true);
+    const formData = new FormData();
+    formData.append("questionId", answer.question_id);
+    formData.append("answerId", answer.id);
 
-    try {
-      const response = await fetch(`/api/answers/${answer.id}/accept`, {
-        method: "POST",
-      });
-
-      if (response.ok) {
-        window.location.reload(); // Refresh page to reflect change
-      }
-    } catch (error) {
-      console.error("Failed to mark answer as accepted:", error);
-    } finally {
-      setLoading(false);
-    }
+    await markAsAccepted(formData);
+    setLoading(false);
   };
 
   return (
@@ -30,7 +23,7 @@ export function AnswerItem({ answer, accepted }: { answer: any, accepted?: boole
       <p className={accepted ? "font-bold text-green-600" : ""}>{answer.text}</p>
       <button
         className={`ml-2 p-2 ${accepted ? "text-green-600" : "text-gray-500 hover:text-blue-500"}`}
-        onClick={markAsAccepted}
+        onClick={markAsCorrect}
         disabled={accepted || loading}
       >
         {accepted ? "✅ Accepted" : "✔ Accept"}
